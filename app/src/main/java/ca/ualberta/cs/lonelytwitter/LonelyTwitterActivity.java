@@ -1,3 +1,9 @@
+/*
+Copyright (C) 2016 Team 20, CMPUT301, University of Alberta - All Rights
+Reserved. You may use, copy, or distribute this code under terms and conditions
+of University of Alberta and Code of Student Behavior.
+Please contact phillip2@ualberta.ca for more details or questions.
+ */
 package ca.ualberta.cs.lonelytwitter;
 
 import java.io.BufferedReader;
@@ -23,9 +29,31 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+/**
+ * This class is the main view class in lonelyTwitter class
+ * It deals with user inputs, saves and loads them in/from
+ * FILE_NAME.
+ * <p> You can access this file from Android Device Monitor </p>
+ * <pre> pre-formatted text</pre>
+ * <code>
+ * pseudo-code that is used in this class:
+ * step 1 ... <br>
+ * step 2...  <br>
+ * </code>
+ *
+ * @author Ali
+ * @slice 1.4
+ * @see NormalTweet
+ * @see java.io.BufferedReader
+ */
 public class LonelyTwitterActivity extends Activity {
 
-	private static final String FILENAME = "file.sav";
+	/**
+	 *  This is the name of the file that app data is saved in.
+	 *  You can access it through Device Monitor by selecting this app
+	 *  then data -> data -> file.sav
+	 */
+	private static final String FILE_NAME = "file.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
 	private ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
@@ -65,6 +93,10 @@ public class LonelyTwitterActivity extends Activity {
 		});
 	}
 
+	/**
+	 *  This method is called whenever the activity is started.
+	 *  It calls loadFromFile method to update the TweetList viewed
+	 */
 	@Override
 	protected void onStart() {
 		// TODO Auto-generated method stub
@@ -75,10 +107,15 @@ public class LonelyTwitterActivity extends Activity {
 		oldTweetsList.setAdapter(adapter);
 	}
 
+	/**
+	 *  This method saves the TweetList to json file
+	 *  @throws RuntimeException
+	 *  @exception FileNotFoundException
+	 */
 	private void loadFromFile() {
 		ArrayList<String> tweets = new ArrayList<String>();
 		try {
-			FileInputStream fis = openFileInput(FILENAME);
+			FileInputStream fis = openFileInput(FILE_NAME);
 			BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 			Gson gson = new Gson();
 			//Code taken from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
@@ -95,11 +132,16 @@ public class LonelyTwitterActivity extends Activity {
 		}
 
 	}
-	
+
+	/**
+	 *  This method loads the json file, generates the tweets from its contents.
+	 *  @throws RuntimeException
+	 *  @exception FileNotFoundException
+	 */
 	private void saveInFile() {
 		try {
 
-			FileOutputStream fos = openFileOutput(FILENAME, 0);
+			FileOutputStream fos = openFileOutput(FILE_NAME, 0);
 			OutputStreamWriter writer = new OutputStreamWriter(fos);
 			Gson gson = new Gson();
 			gson.toJson(tweetList, writer);

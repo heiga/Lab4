@@ -20,10 +20,19 @@ public abstract class Tweet implements Tweetable {
     }
 
 
+    /**
+     * Returns whether the tweet is important or not
+     *
+     * @return boolean
+     */
     public abstract Boolean isImportant();
 
-
-
+    /**
+     * Sets message of the tweet.
+     *
+     * @param message the message
+     * @throws TweetTooLongException the tweet too long exception
+     */
     public void setMessage(String message) throws TweetTooLongException {
         if (message.length() > 140){
             //Do Something!
@@ -32,6 +41,11 @@ public abstract class Tweet implements Tweetable {
         this.message = message;
     }
 
+    /**
+     * Sets date of the tweet.
+     *
+     * @param date the date
+     */
     public void setDate(Date date) {
         this.date = date;
     }

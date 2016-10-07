@@ -11,16 +11,27 @@ import java.util.List;
  */
 public class TweetListTest extends ActivityInstrumentationTestCase2 {
 
+    /**
+     * Instantiates a new Tweet list test.
+     */
     public TweetListTest() {
         super(ca.ualberta.cs.lonelytwitter.LonelyTwitterActivity.class);
     }
 
+    /**
+     * Tests adding a tweet to tweetlist.
+     */
     public void testAddTweet(){
         TweetList tweets = new TweetList();
         Tweet tweet = new NormalTweet("adding tweet");
         tweets.add(tweet);
         assertTrue(tweets.hasTweet(tweet));
     }
+
+    /**
+     * Tests the hasTweet method which checks if the tweetlist contains a
+     * specified tweet.
+     */
     // tests always have to start with lowercase 'test'
     public void testHasTweet(){
         TweetList list = new TweetList();
@@ -29,13 +40,20 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
         assertTrue(list.hasTweet(tweet));
     }
 
+    /**
+     * Tests deletion of tweets from the TweetList.
+     */
     public void testDelete(){
         TweetList list = new TweetList();
         Tweet tweet = new NormalTweet("delet this");
+        list.add(tweet);
         list.delete(tweet);
         assertFalse(list.hasTweet(tweet));
     }
 
+    /**
+     * Tests the getTweet method.
+     */
     public void testGetTweet() {
         TweetList tweets = new TweetList();
         Tweet tweet = new NormalTweet("test");
@@ -44,7 +62,9 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
         assertEquals(returnTweet.getMessage(), tweet.getMessage());
     }
 
-    //@Test (expected = IllegalArgumentException.class)
+    /**
+     *  Tests whether the TweetList rejects duplicate tweets.
+     */
     public void testDuplicateTweets() {
         TweetList tweets = new TweetList();
         Tweet tweet = new NormalTweet("i am kool");
@@ -58,6 +78,9 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
     }
 
 
+    /**
+     * Tests the chronological sorting method of TweetList
+     */
     public void testGetTweets() {
         TweetList tweets = new TweetList();
         Date date1 = new Date(5668);
@@ -76,6 +99,9 @@ public class TweetListTest extends ActivityInstrumentationTestCase2 {
     }
 
 
+    /**
+     * Tests the getCount method
+     */
     public void testCount() {
         TweetList tweets = new TweetList();
         Tweet tweet1 = new NormalTweet("1");
