@@ -19,8 +19,10 @@ import java.util.Date;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,17 +50,21 @@ import com.google.gson.reflect.TypeToken;
  */
 public class LonelyTwitterActivity extends Activity {
 
+	private Activity activity = this;
 	/**
 	 *  This is the name of the file that app data is saved in.
 	 *  You can access it through Device Monitor by selecting this app
 	 *  then data -> data -> file.sav
 	 */
-	private static final String FILE_NAME = "file.sav";
+	private static final String FILE_NAME = "file2.sav";
 	private EditText bodyText;
 	private ListView oldTweetsList;
 	private ArrayList<Tweet> tweetList = new ArrayList<Tweet>();
 	private ArrayAdapter<Tweet> adapter;
 
+	public ListView getOldTweetsList() {
+		return oldTweetsList;
+	}
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,7 +97,17 @@ public class LonelyTwitterActivity extends Activity {
 				saveInFile();
 			}
 		});
+
+		oldTweetsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				Intent intent = new Intent(activity, EditTweetActivity.class);
+				intent.putExtra("tweetMessage", tweetList.get(position).getMessage());
+				startActivity(intent);
+			}
+
+		});
 	}
+
 
 	/**
 	 *  This method is called whenever the activity is started.
@@ -125,7 +141,7 @@ public class LonelyTwitterActivity extends Activity {
 
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
-			throw new RuntimeException();
+			//throw new RuntimeException();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			throw new RuntimeException();
