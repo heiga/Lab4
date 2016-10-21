@@ -58,20 +58,25 @@ public class LonelyTwitterActivity extends Activity {
 				String text = bodyText.getText().toString();
 				NormalTweet newTweet = new NormalTweet(text);
 				tweetList.add(newTweet);
-				adapter.notifyDataSetChanged();
+
 				// saveInFile(); // TODO replace this with elastic search
 				ElasticsearchTweetController.AddTweetsTask addTweetsTask = new ElasticsearchTweetController.AddTweetsTask();
 				addTweetsTask.execute(newTweet);
+
+				updateEverything("");
+				adapter.notifyDataSetChanged();
 			}
 		});
 
 		clearButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				setResult(RESULT_OK);
-				tweetList.clear();
-				deleteFile(FILENAME);  // TODO deprecate this button
-				adapter.notifyDataSetChanged();
+				//setResult(RESULT_OK);
+				//tweetList.clear();
+				//deleteFile(FILENAME);  // TODO deprecate this button
+				//adapter.notifyDataSetChanged();
+				String potato = "\'{\n    \"query\" : { \"tweet\" : \"unique\" \n }";
+				updateEverything(potato);
 			}
 		});
 
@@ -88,19 +93,24 @@ public class LonelyTwitterActivity extends Activity {
 
 	}
 
-	@Override
-	protected void onStart() {
-		// TODO Auto-generated method stub
-		super.onStart();
-		// loadFromFile(); // TODO replace this with elastic search
+	void updateEverything(String input) {
 		ElasticsearchTweetController.GetTweetsTask getTweetsTask = new ElasticsearchTweetController.GetTweetsTask();
-		getTweetsTask.execute("");
+		getTweetsTask.execute(input);
 		try {
 			tweetList = getTweetsTask.get();
 		}
 		catch (Exception e) {
 			Log.i("Error", "Failed to get the tweets out of the async object.");
 		}
+	}
+
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+		// loadFromFile(); // TODO replace this with elastic search
+		updateEverything("");
+
 		adapter = new ArrayAdapter<NormalTweet>(this,
 				R.layout.list_item, tweetList);
 		oldTweetsList.setAdapter(adapter);
